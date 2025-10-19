@@ -1,0 +1,61 @@
+@import './variable.css';
+
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+
+.page.login-page{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: linear-gradient(180deg, var(--bg), #e9fff0);
+  padding:1rem;
+}
+
+.brand{
+  position:fixed;
+  top:18px;
+  left:18px;
+  font-weight:800;
+  color:var(--green);
+  font-size:1.5rem;
+  letter-spacing:0.6px;
+}
+
+
+.input::placeholder{color:rgba(18,53,36,0.45)}
+
+.login-container{
+  width:100%;
+  max-width:420px;
+}
+
+.login-card{
+  background:var(--card);
+  border-radius:12px;
+  padding:1.25rem;
+  box-shadow:0 12px 36px rgba(18,53,36,0.06);
+}
+
+.login-form{display:flex;flex-direction:column;gap:0.75rem}
+.form-title{margin:0 0 0.5rem 0;color:var(--text);font-size:1.25rem}
+.form-sub{margin:0 0 0.75rem 0;color:#2f6b4a;opacity:0.95;font-size:0.95rem}
+
+.field{display:flex;flex-direction:column;gap:0.25rem}
+.label{font-size:0.85rem;color:#2a5c45}
+.input{height:44px;padding:0 0.75rem;border-radius:8px;border:1px solid #e6efe6;background:var(--muted);color:var(--text)}
+.input:focus{outline:3px solid rgba(46,204,113,0.12);border-color:var(--green)}
+
+.btn-primary{background:var(--green);color:white;border:none;padding:0.75rem;border-radius:8px;font-weight:600}
+
+.two-col-row{display:flex;gap:0.75rem}
+.two-col-row .field{flex:1}
+.muted-link{margin-top:0.75rem;color:#376a4a}
+
+
+
+@media (max-width:520px){
+  .login-container{padding:0 0.5rem}
+  .two-col-row{flex-direction:column}
+}

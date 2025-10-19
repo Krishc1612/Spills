@@ -1,0 +1,8 @@
+/* Shared CSS variables for the app */
+:root{
+  --bg: #f7fff7;
+  --card: #ffffff;
+  --text: #123524;
+  --muted: #e9f7ee;
+  --green: #27ae60;
+}

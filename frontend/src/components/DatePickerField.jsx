@@ -1,0 +1,29 @@
+import React, { useState } from 'react'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import '../styles/styles.css'
+
+const DatePickerField = ({ id, placeholder = 'DOB', label }) => {
+  const [value, setValue] = useState(null)
+
+  // compute maxDate = today - 8 years
+  const today = new Date()
+  const maxDate = new Date(today.getFullYear() - 8, today.getMonth(), today.getDate())
+
+  return (
+    <div className="field">
+      {label && <label className="label" htmlFor={id}>{label}</label>}
+      <DatePicker
+        id={id}
+        selected={value}
+        onChange={(date) => setValue(date)}
+        placeholderText={placeholder}
+        dateFormat="dd/MM/yyyy"
+        maxDate={maxDate}
+        className="input"
+      />
+    </div>
+  )
+}
+
+export default DatePickerField
