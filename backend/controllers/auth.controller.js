@@ -3,45 +3,49 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 async function registerUser(req, res){
+    try {
+        const {fullName, email, DOB, password} = req.body
 
-    const {fullName, email, DOB, password} = req.body
-
-    const isUserExists = await userModel.findOne({
-        email : email
-    })
-
-    if (isUserExists) {
-        res.status(400).json({
-            message : "User already exists"
+        const isUserExists = await userModel.findOne({
+            email : email
         })
-    }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-    
-    const user = await userModel.create({
-        fullName : fullName,
-        email : email,
-        password : hashedPassword,
-        DOB : DOB
-    })
-
-    const token = jwt.sign({
-        id : user._id
-    },
-        process.env.JWT_SECRET
-    )
-
-    const cookie = res.cookie('token', token)
-
-    res.status(200).json({
-        message : "User Registered Successfully.",
-        user : {
-            id : user._id,
-            fullName : user.fullName,
-            email : user.email,
-            DOB : user.DOB
+        if (isUserExists) {
+            return res.status(400).json({
+                message : "User already exists"
+            })
         }
-    })
+
+        const hashedPassword = await bcrypt.hash(password, 10)
+        
+        const user = await userModel.create({
+            fullName : fullName,
+            email : email,
+            password : hashedPassword,
+            DOB : DOB
+        })
+
+        const token = jwt.sign({
+            id : user._id
+        },
+            process.env.JWT_SECRET
+        )
+
+        res.cookie('token', token)
+
+        return res.status(200).json({
+            message : "User Registered Successfully.",
+            user : {
+                id : user._id,
+                fullName : user.fullName,
+                email : user.email,
+                DOB : user.DOB
+            }
+        })
+    } catch (err) {
+        console.error('registerUser error:', err)
+        return res.status(500).json({ message: 'Internal server error', error: err.message })
+    }
 } 
 
 module.exports = {
