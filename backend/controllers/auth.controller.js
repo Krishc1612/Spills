@@ -61,15 +61,17 @@ async function loginUser(req, res){
 
         if (!user) {
             return res.status(400).json({
-                message : "Username or password incorrect."
+                message : "email or password incorrect."
             })
         }
 
-        const validatePassword = await bcrypt.compare(user.password, password)
+        const validatePassword = await bcrypt.compare(password, user.password)
+
+        console.log(validatePassword)
 
         if (!validatePassword){
             return res.status(400).json({
-                message : "Username or password incorrect."
+                message : "email or password incorrect."
             })
         }
 
