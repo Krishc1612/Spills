@@ -1,7 +1,7 @@
 const userModel = require('../models/user.model')
 const jwt = require('jsonwebtoken')
 
-async function authUserMiddlware(req, res, next){
+async function authUserMiddleware(req, res, next){
 
     const token = req.cookies.token
 
@@ -14,9 +14,7 @@ async function authUserMiddlware(req, res, next){
     try {
         const clientToken = jwt.verify(token, process.env.JWT_SECRET)
 
-        const user = await userModel.findOne({
-            _id : clientToken.id
-        })
+        const user = await userModel.findById(clientToken.id)
 
         req.user = user
 
@@ -31,5 +29,5 @@ async function authUserMiddlware(req, res, next){
 } 
 
 module.exports = {
-    authUserMiddlware
+    authUserMiddleware
 }
