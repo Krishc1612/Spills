@@ -2,13 +2,15 @@ const medicineModel = require('../models/medicine.model')
 
 async function createMedicine(req, res) {
     try {
-        const { medName, userId } = req.body;
-        if (!medName || !userId) {
+        const user = req.user;
+        const { medName } = req.body;
+        
+        if (!medName || !user) {
             return res.status(400).json({ message: "medName and userId are required." });
         }
         // take care of this too afterwards that it may happen that user don't enter anything at all. Although we will check it in frontend only this is the double check for it. Infact triple check as we check it in the database Schema too.
 
-        const medicineExists = await medicineModel.findOne({ medName, userId });
+        const medicineExists = await medicineModel.findOne({ medName, user });
         if (medicineExists) {
             return res.status(409).json({
                 message: "Medicine already exists.",
@@ -16,7 +18,7 @@ async function createMedicine(req, res) {
             });
         }
 
-        const medicine = await medicineModel.create({ ...req.body, userId, medName });
+        const medicine = await medicineModel.create({ ...req.body, user, medName });
         // same as the things we wrote earlier just in somewhat shorter form. Note that here the req.body's userId will not get assigned to medicine but the explicitly mentioned userId after ...req.body. This is the standard syntax for it.
 
         return res.status(201).json({
