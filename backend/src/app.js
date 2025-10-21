@@ -22,7 +22,7 @@ app.use(express.json())
 app.use('/api/auth', authRoutes)
 app.use(
     '/api/medicine',
-    authMiddlewares.authUserMiddlware,
+    authMiddlewares.authUserMiddleware,
     medicineRoutes
 )
 // app.set("view engine", "ejs")
