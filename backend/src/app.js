@@ -1,7 +1,7 @@
 const express = require('express')
-const authRoutes = require('../routes/auth.routes')
-const medicineRoutes = require('../routes/medicine.routes')
-const authMiddlewares = require('../middlewares/auth.middleware')
+const authRoutes = require('./routes/auth.routes')
+const medicineRoutes = require('./routes/medicine.routes')
+const authMiddlewares = require('./middlewares/auth.middleware')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 
