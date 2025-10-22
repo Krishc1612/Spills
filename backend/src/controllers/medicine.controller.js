@@ -4,7 +4,7 @@ async function createMedicine(req, res) {
     try {
         const user = req.user;
         const { medName } = req.body;
-        
+
         if (!medName || !user) {
             return res.status(400).json({ message: "medName and userId are required." });
         }
@@ -47,7 +47,36 @@ async function updateMedicine(req, res){
 }
 
 async function readMedicine(req, res){
+    try {
+        const { medName } = req.params;
+        const user = req.user;
 
+        const medicine = await medicineModel.findOne({ medName, user });
+
+        if (!medicine){
+            return res.status(404).json({
+                message : "Medicine not found."
+            })
+        }
+
+        return res.status(200).json({
+            message : "Medicine found!",
+            medicine : {
+                _id: medicine._id,
+                medName: medicine.medName,
+                frequency: medicine.frequency,
+                dosage: medicine.dosage,
+                instructions: medicine.instructions,
+                startDate: medicine.startDate,
+                endDate: medicine.endDate                
+            }
+        })
+    } catch (err) {
+        return res.status(500).json({
+            message : "Failed to find the medicine.",
+            error: err.message
+        })
+    }
 }
 
 async function deleteMedicine(req, res){
