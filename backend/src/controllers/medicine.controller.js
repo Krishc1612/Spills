@@ -40,10 +40,43 @@ async function createMedicine(req, res) {
     }
 }
 
-// Note that it is better to validate all the data in the frontend too because anyone can override the frontend using postman or similar service. So always do the checks twice excluding the database checks.
+// Note that it is better to validate all the data in the backend too because anyone can override the frontend using postman or similar service. So always do the checks twice excluding the database checks.
 
 async function updateMedicine(req, res){
+    const { medName, updates } = req.body;
 
+    const medicine = await medicineModel.findOne({ medName });
+
+    if (!medicine){
+        return res.status(404).json({
+            message : "No medicine found."
+        })
+    }
+
+    for (const key in updates) {
+        if (!updates[key] && key != "instructions") {
+            return res.status(400).json({
+                message : `The field ${key} is required.`
+            })
+        }
+
+        const newValue = updates[key];
+        medicine[key] = newValue;
+    }
+
+    await medicine.save();
+    return res.status(200).json({
+        message : "Updated Medicine Details.",
+        medicine : {
+            _id: medicine._id,
+            medName: medicine.medName,
+            frequency: medicine.frequency,
+            dosage: medicine.dosage,
+            instructions: medicine.instructions,
+            startDate: medicine.startDate,
+            endDate: medicine.endDate
+        }
+    })
 }
 
 async function readMedicine(req, res){
@@ -80,7 +113,29 @@ async function readMedicine(req, res){
 }
 
 async function deleteMedicine(req, res){
+    try {
+        const user = req.user;
+        const { medName } = req.params;
+        
+        const medicine = await medicineModel.findOne({ medName, user })
 
+        if (!medicine) {
+            return res.status(400).json({
+                message : "Medicine not found."
+            })
+        }
+
+        await medicine.deleteOne();
+
+        return res.status(200).json({
+            message : "Medicine deleted."
+        })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message : "Failed to delete the medicine."
+        })
+    } 
 }
 
 module.exports = {
