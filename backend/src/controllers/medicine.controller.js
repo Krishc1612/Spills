@@ -29,6 +29,7 @@ async function createMedicine(req, res) {
                 frequency: medicine.frequency,
                 dosage: medicine.dosage,
                 instructions: medicine.instructions,
+                times : medicine.times,
                 startDate: medicine.startDate,
                 endDate: medicine.endDate
             }

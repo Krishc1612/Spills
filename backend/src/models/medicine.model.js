@@ -24,6 +24,10 @@ const medicineSchema = mongoose.Schema({
         type : Date,
         required : true
     },
+    times : {
+        type : [String],
+        required : true
+    },
     user : {
         type: mongoose.Schema.Types.ObjectId,
         ref : "user",

@@ -1,6 +1,7 @@
 const express = require('express')
 const authRoutes = require('./routes/auth.routes')
 const medicineRoutes = require('./routes/medicine.routes')
+const medicineLogRoutes = require('./routes/medicineLog.routes')
 const authMiddlewares = require('./middlewares/auth.middleware')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
@@ -24,6 +25,11 @@ app.use(
     '/api/medicine',
     authMiddlewares.authUserMiddleware,
     medicineRoutes
+)
+app.use(
+    '/api/medicineLog',
+    authMiddlewares.authUserMiddleware,
+    medicineLogRoutes
 )
 // app.set("view engine", "ejs")
 
