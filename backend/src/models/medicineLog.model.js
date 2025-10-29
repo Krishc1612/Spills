@@ -23,7 +23,7 @@ const medicineLogSchema = mongoose.Schema({
         type : String,
         default : null
     },
-    takenLog : {
+    status : {
         type : String,
         enum : ['taken', 'missed', 'canceled'],
         default : null

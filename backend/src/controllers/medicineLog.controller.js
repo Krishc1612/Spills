@@ -19,7 +19,14 @@ async function createMedicineLogs(req, res){
 
     const medicine = await medicineModel.findOne({ user, medName })
 
-    const logs = await medicineLogServices.createDailyMedicineLogs(medicine)
+    if (!medicine) {
+        return res.status(400).json({
+            message : "Medicine not found.",
+            medName : medName
+        })
+    }
+
+    const logs = await medicineLogServices.createDailyMedicineLogs({medicine})
 
     return res.status(201).json({
         message : `Created logs for date: ${medicine.startDate}`,
