@@ -3,6 +3,7 @@ const authRoutes = require('./routes/auth.routes')
 const medicineRoutes = require('./routes/medicine.routes')
 const medicineLogRoutes = require('./routes/medicineLog.routes')
 const authMiddlewares = require('./middlewares/auth.middleware')
+const medicineLogJob = require('./jobs/medicineLog.job')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 
@@ -32,6 +33,8 @@ app.use(
     medicineLogRoutes
 )
 // app.set("view engine", "ejs")
+
+medicineLogJob.scheduleDailyMedicineLogs();
 
 module.exports = app
 // creating the app in app.js

@@ -3,20 +3,20 @@
 const medicineModel = require('../models/medicine.model')
 const medicineLogModel = require('../models/medicineLog.model')
 
-async function createDailyMedicineLogs({ medicine } = {}){
+async function createDailyMedicineLogs({ medicine, date } = {}){
     // returns array of created logs (or existing logs for that date)
 
-    if (!medicine) {
+    if (!medicine || !date) {
         // node-cron function call
     }
 
-    const startDate = medicine.startDate
+    console.log(medicine)
 
     // find existing logs for this user/medicine/date
     const medicineLogs = await medicineLogModel.find({
         user: medicine.user,
         medicine: medicine._id,
-        date: startDate
+        date: date
     })
 
     // if logs already exist for that date, return them
@@ -33,7 +33,7 @@ async function createDailyMedicineLogs({ medicine } = {}){
             user: medicine.user,
             medicine: medicine._id,
             scheduledAt: time,
-            date: startDate
+            date: date
         })
 
         console.log(created)

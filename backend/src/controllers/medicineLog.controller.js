@@ -26,7 +26,7 @@ async function createMedicineLogs(req, res){
         })
     }
 
-    const logs = await medicineLogServices.createDailyMedicineLogs({medicine})
+    const logs = await medicineLogServices.createDailyMedicineLogs({medicine, date : medicine.startDate})
 
     return res.status(201).json({
         message : `Created logs for date: ${medicine.startDate}`,
