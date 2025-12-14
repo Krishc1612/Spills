@@ -1,4 +1,3 @@
-const userModel = require('../models/user.model')
 const jwt = require('jsonwebtoken')
 
 async function authUserMiddleware(req, res, next){
@@ -14,9 +13,7 @@ async function authUserMiddleware(req, res, next){
     try {
         const clientToken = jwt.verify(token, process.env.JWT_SECRET)
 
-        const user = await userModel.findById(clientToken.id)
-
-        req.user = user
+        req.userId = clientToken.id;
 
         next()
 
@@ -25,7 +22,6 @@ async function authUserMiddleware(req, res, next){
             message : "Invalid token."
         })
     }
-
 } 
 
 module.exports = {

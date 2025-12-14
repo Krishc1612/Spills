@@ -44,7 +44,10 @@ async function registerUser(req, res){
         })
     } catch (err) {
         console.error('registerUser error:', err)
-        return res.status(500).json({ message: 'Internal server error', error: err.message })
+        return res.status(500).json({ 
+            message: 'Internal server error',
+            error: err.message 
+        })
     }
 
     // did this inorder to detect any errors happening in the try block.

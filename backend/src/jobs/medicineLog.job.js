@@ -3,7 +3,7 @@ const medicineModel = require('../models/medicine.model')
 const medicineLogService = require('../services/medicineLog.service')
 
 function scheduleDailyMedicineLogs() {
-    cron.schedule('*/1 * * * *', async () => {
+    cron.schedule('0 0 * * *', async () => {
         console.log("Creating today's logs");
 
         const today = new Date();
@@ -14,7 +14,8 @@ function scheduleDailyMedicineLogs() {
             endDate : {$gte : today}
         })
 
-        console.log(today.toString())
+        // console.log(activeMedicines)
+        // console.log(today.toString())
 
         for (const medicine of activeMedicines) {
             const createdLog = await medicineLogService.createDailyMedicineLogs({medicine, date : today})
