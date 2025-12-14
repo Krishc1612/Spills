@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
 
 const medicineLogSchema = mongoose.Schema({
-    medicine : {
+    medicineId : {
         type : mongoose.Schema.Types.ObjectId,
         ref : "medicine",
         required : true
     },
-    user : {
+    userId : {
         type : mongoose.Schema.Types.ObjectId,
         ref : "user",
         required : true
@@ -25,8 +25,8 @@ const medicineLogSchema = mongoose.Schema({
     },
     status : {
         type : String,
-        enum : ['taken', 'missed', 'canceled'],
-        default : null
+        enum : ['taken', 'missed', 'canceled', "pending"],
+        default : "pending"
     }
 })
 

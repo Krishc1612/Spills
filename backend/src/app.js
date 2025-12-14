@@ -35,6 +35,7 @@ app.use(
 // app.set("view engine", "ejs")
 
 medicineLogJob.scheduleDailyMedicineLogs();
+medicineLogJob.scheduleMarkingMissedLogs();
 
 module.exports = app
 // creating the app in app.js

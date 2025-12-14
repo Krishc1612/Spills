@@ -1,21 +1,21 @@
-// Why define services folder here? Isn't services for third party only? No, services folder holds the code that is common to some features. Here the function createDailyMedicineLogs would be common to both medicineLog controller as well as the automatic creation of Logs at definite times.
+// Why define services folder here? Isn't services for third party only? No, services folder holds the code that is common to some features. Here the function createDailyMedicineLogs would be common to both medicineLog controller as well as the automatic creation of Logs at definite times (medicineLog.job).
 
-const medicineModel = require('../models/medicine.model')
 const medicineLogModel = require('../models/medicineLog.model')
 
 async function createDailyMedicineLogs({ medicine, date } = {}){
     // returns array of created logs (or existing logs for that date)
 
     if (!medicine || !date) {
-        // node-cron function call
+        throw new Error("Medicine and date are required keys.");
+        // return;
     }
 
-    console.log(medicine)
+    // console.log(medicine)
 
     // find existing logs for this user/medicine/date
     const medicineLogs = await medicineLogModel.find({
-        user: medicine.user,
-        medicine: medicine._id,
+        userId: medicine.userId,
+        medicineId: medicine._id,
         date: date
     })
 
@@ -29,21 +29,43 @@ async function createDailyMedicineLogs({ medicine, date } = {}){
     for (const time of (medicine.times || [])) {
         // scheduledAt is stored as string in the schema — keep as-is, but you may want
         // to combine date+time into a Date if needed.
+
+        // we did medicine.times || [] because there is a possibility that times can be non-iterable like undefined or null. Which can cause crashes.
         const created = await medicineLogModel.create({
-            user: medicine.user,
-            medicine: medicine._id,
+            userId: medicine.userId,
+            medicineId: medicine._id,
             scheduledAt: time,
             date: date
         })
 
-        console.log(created)
-
+        // console.log(created)
         logs.push(created)
     }
 
     return logs
 }
 
+async function markLogsAsMissed() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // we are setting the time of this Date object as midnight
+
+    const yesterdayStart = new Date(today);
+    yesterdayStart.setDate(today.getDate() - 1);
+
+    const yesterdayEnd = new Date(today);
+
+    const result = await medicineLogModel.updateMany(
+        {
+            date: { $gte: yesterdayStart, $lt: yesterdayEnd }, // No matter what the time on yesterday if the status is pending the log would be marked missed.
+            status: "pending"
+        },
+        { $set: { status: "missed" } }
+    );
+
+    return result; // stats only
+}
+
 module.exports = {
-    createDailyMedicineLogs
+    createDailyMedicineLogs,
+    markLogsAsMissed,
 }

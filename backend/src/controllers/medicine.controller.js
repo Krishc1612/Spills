@@ -1,4 +1,5 @@
 const medicineModel = require('../models/medicine.model')
+const medicineLogServices = require('../services/medicineLog.service')
 
 async function createMedicine(req, res) {
     try {
@@ -20,6 +21,14 @@ async function createMedicine(req, res) {
 
         const medicine = await medicineModel.create({ ...req.body, userId, medName });
         // same as the things we wrote earlier just in somewhat shorter form. Note that here the req.body's userId will not get assigned to medicine but the explicitly mentioned userId after ...req.body. This is the standard syntax for it.
+        // console.log(medicine.userId);
+        // console.log(medicine);
+        
+        const date = medicine.startDate;
+        const logs = await medicineLogServices.createDailyMedicineLogs({
+            medicine,
+            date
+        });
 
         return res.status(201).json({
             message: "Medicine created successfully!",
@@ -37,7 +46,7 @@ async function createMedicine(req, res) {
 
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: "Failed to create the medicine." });
+        return res.status(500).json({ message: err.message });
     }
 }
 
