@@ -42,7 +42,20 @@ function scheduleMarkingMissedLogs() {
     })
 }
 
+function checkAndSendReminders() {
+    cron.schedule('*/5 * * * *', async () => {
+        try {
+            await medicineLogService.findAndSendReminders();
+        } catch (error) {
+            console.log("Failed to check/send reminders: ", error.message);
+        }
+    }, {
+        timezone: 'Asia/Kolkata'
+    })
+}
+
 module.exports = {
     scheduleDailyMedicineLogs,
-    scheduleMarkingMissedLogs
+    scheduleMarkingMissedLogs,
+    checkAndSendReminders
 }

@@ -61,6 +61,11 @@ async function markAsTaken(req, res) {
                 message: "logId is required."
             });
         }
+        const takenAt = new Date().toLocaleTimeString("en-IN", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+        });
 
         const log = await medicineLogModel.findOneAndUpdate(
             {
@@ -69,7 +74,7 @@ async function markAsTaken(req, res) {
                 status: "pending",
                 date : { $gte : todayStart, $lte : todayEnd }
             },
-            { $set: { status: "taken" } },
+            { $set: { status: "taken", takenAt : takenAt } },
             { new: true }
         );
 

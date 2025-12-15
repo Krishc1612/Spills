@@ -36,6 +36,7 @@ app.use(
 
 medicineLogJob.scheduleDailyMedicineLogs();
 medicineLogJob.scheduleMarkingMissedLogs();
+medicineLogJob.checkAndSendReminders();
 
 module.exports = app
 // creating the app in app.js
