@@ -1,5 +1,5 @@
 const medicineModel = require('../models/medicine.model')
-const medicineLogServices = require('../services/medicineLog.service')
+const medicineLogServices = require('../services/medicineLogs/medicineLog.service')
 
 async function createMedicine(req, res) {
     try {

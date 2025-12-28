@@ -25,7 +25,7 @@ const medicineSchema = mongoose.Schema({
         required : true
     },
     times : {
-        type : [String],
+        type : [Date],
         required : true
     },
     userId : {

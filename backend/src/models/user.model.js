@@ -17,6 +17,10 @@ const userSchema = mongoose.Schema({
     password : {
         type : String,
         required : true,
+    },
+    sendNotifications : {
+        type : Boolearn,
+        default : false
     }
 }, 
 {

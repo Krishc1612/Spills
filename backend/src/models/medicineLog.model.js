@@ -27,11 +27,11 @@ const medicineLogSchema = mongoose.Schema({
         type : String,
         enum : ['taken', 'missed', 'canceled', "pending"],
         default : "pending"
-    },
-    reminderSent : {
-        type : Boolean,
-        default : false
     }
+    // reminderSent : {
+    //     type : Boolean,
+    //     default : false
+    // }
 })
 
 const medicineLogModel = mongoose.model("medicineLog", medicineLogSchema);

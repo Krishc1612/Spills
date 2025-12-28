@@ -3,23 +3,21 @@ const authRoutes = require('./routes/auth.routes')
 const medicineRoutes = require('./routes/medicine.routes')
 const medicineLogRoutes = require('./routes/medicineLog.routes')
 const authMiddlewares = require('./middlewares/auth.middleware')
-const medicineLogJob = require('./jobs/medicineLog.job')
+const medicineLogJob = require('./jobs/cron-workers/medicineLog.job')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+const path = require('path');
 
 const app = express()
 
-app.get('/', (req,res) => {
-    res.send("This is sample server.")
-})
-
-app.use(cors({
-    origin : "http://localhost:5173",
-    credentials : true
-}))
+// app.use(cors({
+//     origin : "http://localhost:5173",
+//     credentials : true
+// }))
 app.use(cookieParser())
 // app.use(express.urlencoded({extended : true}))
 app.use(express.json())
+app.use(express.static(path.join(__dirname, "./public")));
 
 app.use('/api/auth', authRoutes)
 app.use(

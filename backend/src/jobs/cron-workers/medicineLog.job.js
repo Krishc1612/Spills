@@ -1,6 +1,6 @@
 const cron = require('node-cron')
-const medicineModel = require('../models/medicine.model')
-const medicineLogService = require('../services/medicineLog.service')
+const medicineModel = require('../../models/medicine.model')
+const medicineLogService = require('../../services/medicineLogs/medicineLog.service')
 
 function scheduleDailyMedicineLogs() {
     cron.schedule('0 0 * * *', async () => {
@@ -42,20 +42,20 @@ function scheduleMarkingMissedLogs() {
     })
 }
 
-function checkAndSendReminders() {
-    cron.schedule('*/5 * * * *', async () => {
-        try {
-            await medicineLogService.findAndSendReminders();
-        } catch (error) {
-            console.log("Failed to check/send reminders: ", error.message);
-        }
-    }, {
-        timezone: 'Asia/Kolkata'
-    })
-}
+// function checkAndSendReminders() {
+//     cron.schedule('*/5 * * * *', async () => {
+//         try {
+//             await medicineLogService.findAndSendReminders();
+//         } catch (error) {
+//             console.log("Failed to check/send reminders: ", error.message);
+//         }
+//     }, {
+//         timezone: 'Asia/Kolkata'
+//     })
+// }
 
 module.exports = {
     scheduleDailyMedicineLogs,
     scheduleMarkingMissedLogs,
-    checkAndSendReminders
+    // checkAndSendReminders
 }

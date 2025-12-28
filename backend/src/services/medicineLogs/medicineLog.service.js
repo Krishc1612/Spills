@@ -1,8 +1,8 @@
 // Why define services folder here? Isn't services for third party only? No, services folder holds the code that is common to some features. Here the function createDailyMedicineLogs would be common to both medicineLog controller as well as the automatic creation of Logs at definite times (medicineLog.job).
 
-const medicineModel = require('../models/medicine.model');
-const medicineLogModel = require('../models/medicineLog.model');
-const userModel = require('../models/user.model');
+const medicineModel = require('../../models/medicine.model');
+const medicineLogModel = require('../../models/medicineLog.model');
+const userModel = require('../../models/user.model');
 const emailServices = require('./email.service')
 
 async function createDailyMedicineLogs({ medicine, date } = {}){
