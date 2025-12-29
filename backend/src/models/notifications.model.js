@@ -31,9 +31,10 @@ const notificationSchema = new mongoose.Schema({
         time : {
             type : String,
             required : true
-        }
-        message : {
-            
+        },
+        dosage : {
+            type : String,
+            required : true
         }
     }
 })

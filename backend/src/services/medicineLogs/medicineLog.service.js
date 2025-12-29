@@ -68,62 +68,62 @@ async function markLogsAsMissed() {
     return result; // stats only
 }
 
-async function findAndSendReminders() {
-    const today = new Date();
-    const todayStart = new Date(today);
-    todayStart.setHours(0,0,0,0);
-    const todayEnd = new Date(today);
-    todayEnd.setHours(23, 59, 59, 999);
+// async function findAndSendReminders() {
+//     const today = new Date();
+//     const todayStart = new Date(today);
+//     todayStart.setHours(0,0,0,0);
+//     const todayEnd = new Date(today);
+//     todayEnd.setHours(23, 59, 59, 999);
 
-    const time = new Date().toLocaleTimeString("en-IN", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false
-    });
+//     const time = new Date().toLocaleTimeString("en-IN", {
+//         hour: "2-digit",
+//         minute: "2-digit",
+//         hour12: false
+//     });
 
-    const minute = parseInt(time.slice(3,5));
+//     const minute = parseInt(time.slice(3,5));
 
-    // if (minute % 5 != 0){
-    //     throw new Error("Minutes must be multiple of 5."); 
-    //     // we only take schedule times that are multiple of 5.
-    //     // In the frontend too we would set it up like that.
-    //     // Also we have to change the check the input while creating meds.
-    // } why comment this too? We already have enforced it through the job. No need here.
+//     // if (minute % 5 != 0){
+//     //     throw new Error("Minutes must be multiple of 5."); 
+//     //     // we only take schedule times that are multiple of 5.
+//     //     // In the frontend too we would set it up like that.
+//     //     // Also we have to change the check the input while creating meds.
+//     // } why comment this too? We already have enforced it through the job. No need here.
 
-    const toBeRemindedLogs = await medicineLogModel.find({
-        date : {$gte : todayStart, $lte : todayEnd},
-        scheduledAt : time,
-        status : "pending",
-        reminderSent : false
-    });
+//     const toBeRemindedLogs = await medicineLogModel.find({
+//         date : {$gte : todayStart, $lte : todayEnd},
+//         scheduledAt : time,
+//         status : "pending",
+//         reminderSent : false
+//     });
 
-    if (toBeRemindedLogs.length == 0){
-        console.log("No logs to remind.");
-        return;
-    }
+//     if (toBeRemindedLogs.length == 0){
+//         console.log("No logs to remind.");
+//         return;
+//     }
 
-    for (const log of toBeRemindedLogs) {
-        const user = await userModel.findById(log.userId);
-        const med = await medicineModel.findById(log.medicineId);
+//     for (const log of toBeRemindedLogs) {
+//         const user = await userModel.findById(log.userId);
+//         const med = await medicineModel.findById(log.medicineId);
 
-        try {
-            await emailServices.sendEmail(user.fullName, user.email, med.medName);
+//         try {
+//             await emailServices.sendEmail(user.fullName, user.email, med.medName);
 
-            await medicineLogModel.updateOne(
-                { _id : log._id },
-                { $set : { reminderSent : true } }
-            );
+//             await medicineLogModel.updateOne(
+//                 { _id : log._id },
+//                 { $set : { reminderSent : true } }
+//             );
             
-        } catch (error) {
-            // throw new Error(error.message); Don't do this this will crash the whole batch i.e, if one reminder crashes all of them would crash.
-            console.error(`Reminder failed for log ${log._id}: `, error.message);
-            continue;
-        }
-    }
-}
+//         } catch (error) {
+//             // throw new Error(error.message); Don't do this this will crash the whole batch i.e, if one reminder crashes all of them would crash.
+//             console.error(`Reminder failed for log ${log._id}: `, error.message);
+//             continue;
+//         }
+//     }
+// }
 
 module.exports = {
     createDailyMedicineLogs,
     markLogsAsMissed,
-    findAndSendReminders
+    // findAndSendReminders
 }
