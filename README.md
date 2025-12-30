@@ -22,7 +22,7 @@ The backend logic and APIs are fully implemented and tested. Frontend is yet to 
 - Node.js
 - Express.js
 - MongoDB
-- Background jobs / scheduling (cron / queues)
+- Background jobs / scheduling (node-cron)
 - REST APIs
 
 ---
